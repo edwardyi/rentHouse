@@ -1,0 +1,513 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+WebApplication3
+</name>
+</assembly>
+<members>
+<member name="F:WebApplication3.ajaxUpdateProgressTest.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.ajaxUpdateProgressTest.ScriptManager1">
+	<summary>
+ScriptManager1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.ajaxUpdateProgressTest.UpdateProgress1">
+	<summary>
+UpdateProgress1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.ajaxUpdateProgressTest.UpdatePanel1">
+	<summary>
+UpdatePanel1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.ajaxUpdateProgressTest.Button1">
+	<summary>
+Button1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.MultiView1">
+	<summary>
+MultiView1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.View1">
+	<summary>
+View1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.PreView">
+	<summary>
+PreView 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.Button2">
+	<summary>
+Button2 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.Button3">
+	<summary>
+Button3 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.Button4">
+	<summary>
+Button4 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.View2">
+	<summary>
+View2 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.MultiViewTest.View3">
+	<summary>
+View3 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="P:WebApplication3.My.MyWebExtension.Computer">
+	<summary>
+ 傳回主機電腦的相關資訊。
+ </summary>
+</member><member name="P:WebApplication3.My.MyWebExtension.User">
+	<summary>
+ 傳回目前 Web 使用者的資訊。
+ </summary>
+</member><member name="P:WebApplication3.My.MyWebExtension.Request">
+	<summary>
+ 傳回 Request 物件。
+ </summary>
+</member><member name="P:WebApplication3.My.MyWebExtension.Response">
+	<summary>
+ 傳回 Response 物件。
+ </summary>
+</member><member name="P:WebApplication3.My.MyWebExtension.Log">
+	<summary>
+ 傳回 Asp 記錄物件。
+ </summary>
+</member><member name="T:WebApplication3.My.MyWebExtension">
+	<summary>
+ 用來定義可用於 Web 專案 My 命名空間中之屬性的模組。
+ </summary>
+	<remarks></remarks>
+</member><member name="F:WebApplication3.NewRenter.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.showRepeater.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.showRepeater.showRepeater1">
+	<summary>
+showRepeater1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.PureArray.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.DataTableTest.Banner">
+	<summary>
+Banner 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.DataTableTest.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.DataTableTest.gv1">
+	<summary>
+gv1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.lbl_WorkId">
+	<summary>
+lbl_WorkId 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.workId">
+	<summary>
+workId 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.workIdCheckEmpty">
+	<summary>
+workIdCheckEmpty 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.workIdCheck">
+	<summary>
+workIdCheck 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.lbl_start">
+	<summary>
+lbl_start 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.startDate">
+	<summary>
+startDate 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.lbl_end">
+	<summary>
+lbl_end 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.endDate">
+	<summary>
+endDate 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.newRenter">
+	<summary>
+newRenter 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.btn_Submit">
+	<summary>
+btn_Submit 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.showResult">
+	<summary>
+showResult 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.lb1_total">
+	<summary>
+lb1_total 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.total">
+	<summary>
+total 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.showAllUsers">
+	<summary>
+showAllUsers 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.showUsersGrid">
+	<summary>
+showUsersGrid 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3._Default.Repeater1">
+	<summary>
+Repeater1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="M:WebApplication3.RentHouseEntities1.#ctor">
+	<summary>
+使用應用程式組態檔 'RentHouseEntities1' 區段中找到的連接字串初始化新的 RentHouseEntities1 物件。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities1.#ctor(System.String)">
+	<summary>
+初始化新的 RentHouseEntities1 物件。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities1.#ctor(System.Data.EntityClient.EntityConnection)">
+	<summary>
+初始化新的 RentHouseEntities1 物件。
+</summary>
+</member><member name="P:WebApplication3.RentHouseEntities1.Renter">
+	<summary>
+結構描述中沒有 Renter 的註解。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities1.AddToRenter(WebApplication3.Renter)">
+	<summary>
+結構描述中沒有 Renter 的註解。
+</summary>
+</member><member name="T:WebApplication3.RentHouseEntities1">
+	<summary>
+結構描述中沒有 RentHouseEntities1 的註解。
+</summary>
+</member><member name="M:WebApplication3.Renter.CreateRenter(System.Int32,System.Int32)">
+	<summary>
+建立新的 Renter 物件。
+</summary>
+	<param name="id">ID 的初始值。</param>
+	<param name="workId">WorkId 的初始值。</param>
+</member><member name="P:WebApplication3.Renter.ID">
+	<summary>
+結構描述中沒有屬性 ID 的註解。
+</summary>
+</member><member name="P:WebApplication3.Renter.WorkId">
+	<summary>
+結構描述中沒有屬性 WorkId 的註解。
+</summary>
+</member><member name="P:WebApplication3.Renter.Name">
+	<summary>
+結構描述中沒有屬性 Name 的註解。
+</summary>
+</member><member name="T:WebApplication3.Renter">
+	<summary>
+結構描述中沒有 RentHouseModel1.Renter 的註解。
+</summary>
+	<KeyProperties>
+ID
+</KeyProperties>
+</member><member name="M:WebApplication3.RentHouseEntities.#ctor">
+	<summary>
+使用應用程式組態檔 'RentHouseEntities' 區段中找到的連接字串初始化新的 RentHouseEntities 物件。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities.#ctor(System.String)">
+	<summary>
+初始化新的 RentHouseEntities 物件。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities.#ctor(System.Data.EntityClient.EntityConnection)">
+	<summary>
+初始化新的 RentHouseEntities 物件。
+</summary>
+</member><member name="P:WebApplication3.RentHouseEntities.RentRecord">
+	<summary>
+結構描述中沒有 RentRecord 的註解。
+</summary>
+</member><member name="M:WebApplication3.RentHouseEntities.AddToRentRecord(WebApplication3.RentRecord)">
+	<summary>
+結構描述中沒有 RentRecord 的註解。
+</summary>
+</member><member name="T:WebApplication3.RentHouseEntities">
+	<summary>
+結構描述中沒有 RentHouseEntities 的註解。
+</summary>
+</member><member name="M:WebApplication3.RentRecord.CreateRentRecord(System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32)">
+	<summary>
+建立新的 RentRecord 物件。
+</summary>
+	<param name="id">ID 的初始值。</param>
+	<param name="workID">WorkID 的初始值。</param>
+	<param name="startDate">StartDate 的初始值。</param>
+	<param name="endDate">EndDate 的初始值。</param>
+	<param name="rentPerPrice">RentPerPrice 的初始值。</param>
+</member><member name="P:WebApplication3.RentRecord.ID">
+	<summary>
+結構描述中沒有屬性 ID 的註解。
+</summary>
+</member><member name="P:WebApplication3.RentRecord.WorkID">
+	<summary>
+結構描述中沒有屬性 WorkID 的註解。
+</summary>
+</member><member name="P:WebApplication3.RentRecord.StartDate">
+	<summary>
+結構描述中沒有屬性 StartDate 的註解。
+</summary>
+</member><member name="P:WebApplication3.RentRecord.EndDate">
+	<summary>
+結構描述中沒有屬性 EndDate 的註解。
+</summary>
+</member><member name="P:WebApplication3.RentRecord.RentPerPrice">
+	<summary>
+結構描述中沒有屬性 RentPerPrice 的註解。
+</summary>
+</member><member name="T:WebApplication3.RentRecord">
+	<summary>
+結構描述中沒有 RentHouseModel.RentRecord 的註解。
+</summary>
+	<KeyProperties>
+ID
+</KeyProperties>
+</member><member name="F:WebApplication3.WebForm1.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.WebForm1.ScriptManager2">
+	<summary>
+ScriptManager2 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.Banner.VerticalPanel">
+	<summary>
+VerticalPanel 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.Banner.Image1">
+	<summary>
+Image1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.Banner.HorizontalPanel">
+	<summary>
+HorizontalPanel 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.Banner.Image2">
+	<summary>
+Image2 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.dynamicTable.form1">
+	<summary>
+form1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member><member name="F:WebApplication3.dynamicTable.Table1">
+	<summary>
+Table1 控制項。
+</summary>
+	<remarks>
+自動產生的欄位。
+將移動欄位宣告從設計檔案修改為程式碼後置檔案。
+</remarks>
+</member>
+</members>
+</doc>
