@@ -7,20 +7,12 @@ Imports System.Web.Services.Protocols
 <WebService(Namespace:="http://tempuri.org/")> _
 <WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)> _
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Public Class dynamicTable
+Public Class dynamicTable1
      Inherits System.Web.Services.WebService
 
     <WebMethod()> _
-    Public Function HelloWorld() As String
-        Return "Hello World"
-    End Function
-
-    <System.Web.Services.WebMethod()> _
-    Public Shared Function GetCurrentTime(ByVal name As String) As String
-        Return "Hello " & name & Environment.NewLine & "The Current Time is: " & DateTime.Now.ToString()
-    End Function
-    Public Function Test() As String
-        Return "123"
+    Public Function HelloWorld(ByVal name As String) As String
+        Return "Hello World" & name & " TT"
     End Function
 
 End Class

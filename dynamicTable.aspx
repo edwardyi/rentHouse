@@ -10,11 +10,14 @@
     <form id="form1" runat="server">
     <div>
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
+            <Services>
+                <asp:ServiceReference Path="dynamicTable.asmx" />
+            </Services>
         </asp:ScriptManager>
         Your Name :
         <asp:TextBox ID="txtUserName" runat="server"></asp:TextBox>
         <input id="btnGetTime" type="button" value="Show Current Time"
-            onclick = "ShowCurrentTime()" />
+            onclick = "ShowCurrentTime(this.form)" />
         <br />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
@@ -60,10 +63,20 @@
         lblTime.innerHTML = time;
     }
 
-function ShowCurrentTime() {
-    //debugger;
-    PageMethods.GetCurrentTime(document.getElementById("<%=txtUserName.ClientID%>").value, OnSuccess);
-}
+    function ShowCurrentTime(form) {
+        WebService.sayHello(
+            form.element["txtUserName"].value,
+            callComplete,
+            callError);
+        //debugger;
+        //PageMethods.GetCurrentTime(document.getElementById("<%=txtUserName.ClientID%>").value, OnSuccess);
+    }
+    function callComplete(result) {
+        alert(result);
+    }
+    function callError(result) {
+        alert(result);
+    }
 function OnSuccess(response,userControl,methodName) {
     alert(response);
 }
