@@ -9,36 +9,63 @@
 <body>
     <form id="form1" runat="server">
     <div>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
+        </asp:ScriptManager>
         Your Name :
         <asp:TextBox ID="txtUserName" runat="server"></asp:TextBox>
         <input id="btnGetTime" type="button" value="Show Current Time"
             onclick = "ShowCurrentTime()" />
         <br />
-            
-            <asp:Button ID="Button1" runat="server" Text="Button" />
-        </div>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+                <asp:Label ID="lblTime" runat="server" ></asp:Label>
+                <asp:Button ID="btnTime" runat="server" Text="JS取時間" />
+            </ContentTemplate>
+        </asp:UpdatePanel>
+           
+    </div>
     </form>
     
 </body>
-<script src="http://localhost/app3/Scripts/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type = "text/javascript">
- function ShowCurrentTime() {
-    $.ajax({
-        type: "POST",
-        url: "dynamicTable.vb/GetCurrentTime",
-        data: '{name: "' + $("#<%=txtUserName.ClientID%>")[0].value + '" }',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSuccess,
-        failure: function(response) {
-            alert(response.d);
-        }
-    });
+<script type="text/javascript">
+    window.onload = function() {
+        DisplayCurrentTime();
+    }
+    //當更新面板重整時
+    //On UpdatePanel Refresh
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    if (prm != null) {
+        prm.add_endRequest(function(sender, e) {
+            if (sender._postBackSettings.panelsToUpdate != null) {
+                DisplayCurrentTime();
+            }
+        });
+    };
+    /*
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    if (prm != null) {
+        prm.add_endRequest(function(sender, e) {
+            if (sender._postBackSettings.panelsToUpdate != null) {
+                DisplayCurrentTime();
+            }
+        });
+    }*/
+    function DisplayCurrentTime() {
+        var date = new Date();
+        var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+        time = hours + ":" + minutes + ":" + seconds;
+        var lblTime = document.getElementById("<%=lblTime.ClientID %>");
+        lblTime.innerHTML = time;
+    }
 
+function ShowCurrentTime() {
+    //debugger;
+    PageMethods.GetCurrentTime(document.getElementById("<%=txtUserName.ClientID%>").value, OnSuccess);
 }
-function OnSuccess(response) {
-    alert(response.d);
+function OnSuccess(response,userControl,methodName) {
+    alert(response);
 }
 </script>
 </html>
