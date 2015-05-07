@@ -27,7 +27,7 @@
         <asp:TextBox ID="endDate" runat="server" ></asp:TextBox><br />
         <asp:Button ID="newRenter" runat="server" Text="新增" /> 
         <asp:Button ID="btn_Submit" runat="server" Text="計算" Visible="False" />
-        
+       
         
         <div id="showTable">
             <!--

@@ -1,4 +1,5 @@
-﻿Partial Public Class _Default
+﻿Imports System.Data
+Partial Public Class _Default
     Inherits System.Web.UI.Page
     Protected output As String
     'Repeater會用到(全域變數)
@@ -177,8 +178,8 @@
             detailGrid.DataBind()
             detailGrid.FooterRow.Parent.Controls.Add(row)
         End If
-        
+
 
     End Sub
-   
+
 End Class
