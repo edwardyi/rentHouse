@@ -17,6 +17,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+     
      使用者列表&nbsp;
      <!--Ajax -->
      <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true">
@@ -29,10 +30,13 @@
                    <p class="updateProcess">處理中，請稍候...</p>
                 </ProgressTemplate>
             </asp:UpdateProgress>
+            
             <p>GridView更新時間<%=DateTime.Now.ToLongTimeString() %></p>
+            <asp:HyperLink ID="Show_Link" runat="server" NavigateUrl="AddRenter.aspx">新增使用者</asp:HyperLink>
+            <asp:HyperLink ID="Show_rent" runat="server" NavigateUrl="Default.aspx">顯示租屋</asp:HyperLink>
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
                 DataSourceID="SqlDataSource2" EmptyDataText="沒有資料錄可顯示。" AllowPaging="True" 
-                AllowSorting="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="ChangeColor" PageSize="2">
+                AllowSorting="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnRowDataBound="ChangeColor" PageSize="5">
                 <RowStyle BackColor="#EFF3FB" />
                 <Columns>
                     <asp:BoundField DataField="ID" HeaderText="ID" SortExpression="ID" />
@@ -75,6 +79,7 @@
             <asp:Parameter Name="Name" Type="String" />
         </InsertParameters>
      </asp:SqlDataSource>
+     
     </form>
     
 </body>

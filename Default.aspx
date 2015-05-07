@@ -20,12 +20,13 @@
             Display="Dynamic"></asp:RangeValidator>
         
         <br />
+        
         <asp:Label ID="lbl_start" runat="server" Text="開始租屋"></asp:Label>
         <asp:TextBox ID="startDate" runat="server"  ></asp:TextBox><br />
         <asp:Label ID="lbl_end" runat="server" Text="結束租屋"></asp:Label>
         <asp:TextBox ID="endDate" runat="server" ></asp:TextBox><br />
         <asp:Button ID="newRenter" runat="server" Text="新增" /> 
-        <asp:Button ID="btn_Submit" runat="server" Text="計算" />
+        <asp:Button ID="btn_Submit" runat="server" Text="計算" Visible="False" />
         
         
         <div id="showTable">
@@ -43,6 +44,7 @@
     <div>
      
      <asp:Button ID="showAllUsers" runat="server" Text="顯示租屋狀況" />
+     <asp:HyperLink ID="Show_Link" runat="server" NavigateUrl="AddRenter.aspx">新增使用者</asp:HyperLink>
      <!--設定取消自動生成欄位的屬性 -->
     <asp:GridView ID="showUsersGrid" AutoGenerateColumns="false"
         runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" >

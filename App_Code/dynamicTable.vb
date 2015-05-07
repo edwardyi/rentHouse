@@ -15,12 +15,31 @@ Public Class dynamicTable
         Return "Hello World"
     End Function
 
-    <System.Web.Services.WebMethod()> _
-    Public Shared Function GetCurrentTime(ByVal name As String) As String
+    <WebMethod()> _
+    Public Function GetCurrentTime(ByVal name As String) As String
         Return "Hello " & name & Environment.NewLine & "The Current Time is: " & DateTime.Now.ToString()
     End Function
+    <WebMethod()> _
     Public Function Test() As String
         Return "123"
+    End Function
+    <WebMethod()> Public Function Add(ByVal a As Integer, ByVal b As Integer) As Integer
+        Return (a + b)
+    End Function
+
+    <WebMethod()> Public Function Subtract(ByVal A As System.Single, ByVal B As System.Single) As System.Single
+        Return A - B
+    End Function
+
+    <WebMethod()> Public Function Multiply(ByVal A As System.Single, ByVal B As System.Single) As System.Single
+        Return A * B
+    End Function
+
+    <WebMethod()> Public Function Divide(ByVal A As System.Single, ByVal B As System.Single) As System.Single
+        If B = 0 Then
+            Return -1
+        End If
+        Return Convert.ToSingle(A / B)
     End Function
 
 End Class
