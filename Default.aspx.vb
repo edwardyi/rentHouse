@@ -134,7 +134,7 @@ Partial Public Class _Default
         Dim rate = Rent3.Rate
         '回傳天數陣列
         Dim arr_month_fee = Rent3.pushArr(s_date, e_date, threeMonthFee, rate)
-        Dim rowList = Rent3.showDetail(s_date, e_date, arr_month_fee, threeMonthFee, rate, dt)
+        Dim rowList = Rent3.showDetail(workId, s_date, e_date, arr_month_fee, threeMonthFee, rate, dt)
         '加入每一列
         For Each row As DataRow In rowList
             dt.Rows.Add(row)

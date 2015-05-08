@@ -29,12 +29,12 @@
         <asp:Button ID="btn_Get_Current_DataSet" runat="server" Text="取得所有資料" />
         <asp:GridView ID="show_temp_gridview" runat="server"  AutoGenerateColumns="false">
             <Columns>
-                <asp:BoundField HeaderText="工號" DataField="WorkId" />
-                <asp:BoundField HeaderText="開始日期" DataField="s_current_date" DataFormatString="{0:yyyy/MM/dd}" />
-                <asp:BoundField HeaderText="結束日期" DataField="e_current_date" DataFormatString="{0:yyyy/MM/dd}" />
-                <asp:BoundField HeaderText="當月費用" DataField="current_money" DataFormatString="{0:N0}" />
-                <asp:BoundField HeaderText="平均" DataField="current_average" DataFormatString="{0:N0}" />
-                <asp:BoundField HeaderText="住屋天數" DataField="debug" />
+                
+                <asp:BoundField HeaderText="開始日期" DataField="s_date" DataFormatString="{0:yyyy/MM/dd}" />
+                <asp:BoundField HeaderText="結束日期" DataField="e_date" DataFormatString="{0:yyyy/MM/dd}" />
+                <asp:BoundField HeaderText="當月費用" DataField="money" DataFormatString="{0:N0}" />
+                <asp:BoundField HeaderText="平均" DataField="average" DataFormatString="{0:N0}" />
+                <asp:BoundField HeaderText="住屋天數" DataField="liveDays" DataFormatString="{0:N0}" />
             </Columns>
            
         </asp:GridView>

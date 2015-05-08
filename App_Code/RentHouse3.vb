@@ -81,17 +81,38 @@ Public Class RentHouse3
         Return daysArray
     End Function
     '判斷開始租屋是否為滿月
-    Public Function isfullStart(ByVal day, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
+    Public Function isfullStart(ByVal day, ByVal eday, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
+        '判斷開始到結束日期天數是否在一個月內
+        day = CDate(day)
+        eday = CDate(eday)
+        daysInMonth = Convert.ToInt32(daysInMonth)
+        threeMonthFee = Convert.ToInt32(threeMonthFee)
+        'Return daysInMonth
+        '(IIf(testMe > 1000, "Large", "Small")
+        'iff(daysInMonth.Equals(0), )
+
+        Dim unit As Integer = Convert.ToInt32(threeMonthFee / daysInMonth)
+        '[unit = threeMonthFee / daysInMonth
+        'Dim datediff1 = DateAndTime.DateDiff(DateInterval.Day, CDate(day), CDate(eday))
+        'datediff1 < daysInMonth
         '滿月
-        If (day.Equals(1)) Then
+        If (day.Day.Equals(1)) Then
             currentFlag = currentFlag + 1
             Return threeMonthFee
         Else
-            Dim interval = daysInMonth - day + 1
-            '非滿月
-            Return threeMonthFee * (interval / 30)
-        End If
+            Dim interval As Integer
+            If eday.Day.Equals(daysInMonth) Then
+                interval = daysInMonth - day.Day + 1
+            Else
+                interval = eday.Day - day.Day + 1
+            End If
 
+
+            'Return eday.Day
+            '非滿月
+            Return unit * interval
+            'Return threeMonthFee * (interval / 30)
+        End If
     End Function
     '判斷結束租屋是否滿月
     Public Function isfullEnd(ByVal day, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
@@ -147,7 +168,7 @@ Public Class RentHouse3
             If i.Equals(0) Then
 
                 dayCount = Item - sDate.Day + 1
-                arr_month_fee(i) = isfullStart(sDate.Day, Item, threeMonthFee, rate)
+                arr_month_fee(i) = isfullStart(sDate, eDate, Item, threeMonthFee, rate)
                 'arr_month_fee(i) = threeMonthFee * (dayCount / 30)
                 '判斷是否為結束時間
             ElseIf i.Equals(CInt(arr.length) - 1) Then
@@ -194,7 +215,7 @@ Public Class RentHouse3
 
     End Function
     '顯示明細gridview
-    Public Function showDetail(ByVal sDate, ByVal eDate, ByVal arr_month_fee, ByVal threeMonthFee, ByVal rate, ByVal dt)
+    Public Function showDetail(ByVal workId, ByVal sDate, ByVal eDate, ByVal arr_month_fee, ByVal threeMonthFee, ByVal rate, ByVal dt)
         Dim rowList As New List(Of DataRow)
 
         Dim totalRent = 0
@@ -213,22 +234,37 @@ Public Class RentHouse3
             'outStr = outStr & currentYear & "年" & currentMonth & "月"
             '當前月份天數
             Dim daysInmonth = DateTime.DaysInMonth(currentYear, currentMonth)
-
+            Dim money As Integer = 0
+            dr.Item("workId") = workId
             If j.Equals(0) Then
                 dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & sDate.Day
-                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
-                dr.Item("average") = Convert.ToInt32(Item / (daysInmonth - sDate.Day + 1))
+                If eDate.Month.Equals(currentMonth) Then
+                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
+                Else
+                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
+                End If
 
+                money = isfullStart(sDate, eDate, Item, threeMonthFee, rate)
+                dr.Item("money") = money
+                dr.Item("average") = Convert.ToInt32(money / (daysInmonth - sDate.Day + 1))
+                dr.Item("liveDays") = daysInmonth - sDate.Day + 1
             ElseIf j.Equals(arr_month_fee.Length - 1) Then
                 dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
+                money = isfullEnd(eDate.Day, Item, threeMonthFee, rate)
+                dr.Item("money") = money
                 dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
-                dr.Item("average") = Convert.ToInt32(Item / eDate.Day)
+                dr.Item("average") = Convert.ToInt32(money / eDate.Day)
+                dr.Item("liveDays") = eDate.Day
             Else
                 dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
                 dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
-                dr.Item("average") = Convert.ToInt32(Item / daysInmonth)
+                money = isfullother(Item, threeMonthFee, rate)
+                dr.Item("money") = money
+                dr.Item("average") = Convert.ToInt32(money / daysInmonth)
+                dr.Item("liveDays") = daysInmonth
             End If
-            dr.Item("money") = Item
+
+            'dr.Item("money") = Item
 
             output = output & "<br/>"
             currentMonth = currentMonth + 1

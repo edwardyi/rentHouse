@@ -174,6 +174,7 @@ Public Class RentHouse4
     '點擊顯示後佔存於datatable中
     Public Sub SaveInTempDataTable(ByVal dataTable As DataTable)
         tempDataSet.Tables.Add(dataTable)
+
     End Sub
     Public Function GetTempDataSet() As DataSet
         Return tempDataSet
@@ -183,7 +184,52 @@ Public Class RentHouse4
     Public Sub UpdateTempDataTable(ByVal dataset, ByVal workId, ByVal startDate, ByVal endDate)
 
     End Sub
+    '顯示明細gridview
+    Public Function showDetail(ByVal workId, ByVal sDate, ByVal eDate, ByVal arr_month_fee, ByVal threeMonthFee, ByVal rate, ByVal dt)
+        Dim rowList As New List(Of DataRow)
 
+        Dim totalRent = 0
+        Dim currentYear = sDate.Year
+        Dim currentMonth = sDate.Month
+        Dim j As Integer = 0
+
+        For Each Item As Integer In arr_month_fee
+            Dim dr As DataRow = dt.NewRow()
+
+            Dim outStr As String = ""
+            If currentMonth > 12 Then
+                currentMonth = 1
+                currentYear = currentYear + 1
+            End If
+            'outStr = outStr & currentYear & "年" & currentMonth & "月"
+            '當前月份天數
+            Dim daysInmonth = DateTime.DaysInMonth(currentYear, currentMonth)
+            dr.Item("workId") = workId
+            If j.Equals(0) Then
+
+                dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & sDate.Day
+                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
+                dr.Item("average") = Convert.ToInt32(Item / (daysInmonth - sDate.Day + 1))
+
+            ElseIf j.Equals(arr_month_fee.Length - 1) Then
+                dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
+                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
+                dr.Item("average") = Convert.ToInt32(Item / eDate.Day)
+            Else
+                dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
+                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
+                dr.Item("average") = Convert.ToInt32(Item / daysInmonth)
+            End If
+            dr.Item("money") = Item
+
+            output = output & "<br/>"
+            currentMonth = currentMonth + 1
+            totalRent = totalRent + Item
+            j = j + 1
+            rowList.Add(dr)
+        Next
+        Return rowList
+    End Function
     '計算每一列資料
     Public Function getTempDataTable(ByVal workId, ByVal sDate, ByVal eDate) As DataTable
         sDate = Convert.ToDateTime(sDate)
