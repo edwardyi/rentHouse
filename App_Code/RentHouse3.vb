@@ -83,36 +83,41 @@ Public Class RentHouse3
     '判斷開始租屋是否為滿月
     Public Function isfullStart(ByVal day, ByVal eday, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
         '判斷開始到結束日期天數是否在一個月內
-        day = CDate(day)
-        eday = CDate(eday)
-        daysInMonth = Convert.ToInt32(daysInMonth)
-        threeMonthFee = Convert.ToInt32(threeMonthFee)
-        'Return daysInMonth
-        '(IIf(testMe > 1000, "Large", "Small")
-        'iff(daysInMonth.Equals(0), )
 
-        Dim unit As Integer = Convert.ToInt32(threeMonthFee / daysInMonth)
-        '[unit = threeMonthFee / daysInMonth
-        'Dim datediff1 = DateAndTime.DateDiff(DateInterval.Day, CDate(day), CDate(eday))
-        'datediff1 < daysInMonth
-        '滿月
-        If (day.Day.Equals(1)) Then
-            currentFlag = currentFlag + 1
-            Return threeMonthFee
-        Else
-            Dim interval As Integer
-            If eday.Day.Equals(daysInMonth) Then
-                interval = daysInMonth - day.Day + 1
+        Dim unit As Double = 0
+        'Return DateTime.Compare(day, eday)
+        'Return (day.Year & "|" & eday.Year)
+        Dim span As TimeSpan = eday.Subtract(day)
+        '同年同月
+        'If (day.Year.Equals(eday.Year) And day.Month.Equals(eday.Month)) Then
+        If span.Days < daysInMonth Then
+            'unit = (span.Days + 1) / daysInMonth
+            unit = span.Days + 1
+            unit = unit / daysInMonth
+
+            'unit = 10
+            '滿月
+            If (unit.Equals(1)) Then
+                currentFlag = currentFlag + 1
+                Return threeMonthFee
             Else
-                interval = eday.Day - day.Day + 1
+                Return threeMonthFee * unit
+
             End If
+        Else
+            'unit = (daysInMonth - day.Day + 1) / daysInMonth
+            unit = daysInMonth - day.Day + 1
+            unit = unit / daysInMonth
 
+            If (unit.Equals(1)) Then
+                currentFlag = currentFlag + 1
+                Return threeMonthFee
 
-            'Return eday.Day
-            '非滿月
-            Return unit * interval
-            'Return threeMonthFee * (interval / 30)
+            Else
+                Return threeMonthFee * unit
+            End If
         End If
+
     End Function
     '判斷結束租屋是否滿月
     Public Function isfullEnd(ByVal day, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
