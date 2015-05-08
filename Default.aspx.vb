@@ -21,8 +21,8 @@ Partial Public Class _Default
         'Repeater1.DataBind()
         'Me.DataBind()
     End Sub
-
-    Protected Sub btn_Submit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btn_Submit.Click
+    'Handles btn_Submit.Click
+    Protected Sub btn_Submit_Click(ByVal sender As Object, ByVal e As EventArgs)
 
         '使用request取值
         Dim startDate = Request("startDate")
@@ -31,6 +31,9 @@ Partial Public Class _Default
         Dim dictionary = createRent(startDate, endDate)
         Dim Rent3 = dictionary.Item("Rent")
         Dim totalRent = dictionary.Item("totalRent").ToString
+        Dim lb1_total As Label = FindControl("lb1_total")
+        Dim showResult As Label = FindControl("showResult")
+        Dim total As Label = FindControl("total")
         lb1_total.Visible = True
         showResult.Text = Rent3.output
         total.Text = FormatCurrency(totalRent, 0)
@@ -61,17 +64,18 @@ Partial Public Class _Default
         dictionary.Add("totalRent", totalRent)
         Return dictionary
     End Function
-    Protected Sub showAllUsers_Click(ByVal sender As Object, ByVal e As EventArgs) Handles showAllUsers.Click
+    'Handles showAllUsers.Click
+    Protected Sub showAllUsers_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim connection = New Connection
         '呼叫完方法後就關閉連線(要用連線的話在開啟)
         Dim ds As DataSet = connection.GetRentRecord()
-
+        Dim showUsersGrid As GridView = Page.FindControl("showUsersGrid")
         showUsersGrid.DataSource = ds
         showUsersGrid.DataBind()
 
     End Sub
-
-    Protected Sub newRenter_Click(ByVal sender As Object, ByVal e As EventArgs) Handles newRenter.Click
+    'Handles newRenter.Click
+    Protected Sub newRenter_Click(ByVal sender As Object, ByVal e As EventArgs)
 
         Dim WorkID = Request("workId")
         Dim startDate = Request("startDate")
@@ -149,7 +153,8 @@ Partial Public Class _Default
         Return datatable
     End Function
     'RowDataBound事件(每一個列)
-    Private Sub showUsersGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles showUsersGrid.RowDataBound
+    'Handles showUsersGrid.RowDataBound
+    Private Sub showUsersGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType = DataControlRowType.DataRow Then
             '取得UserId
             Dim UserId As String = e.Row.Cells(1).Text

@@ -18,7 +18,7 @@ Public Class RentHouse3
     '使用Property方法設定及存取屬性
     '必須要大寫開頭
     Public Property SDate() As String
-        Get n
+        Get
             Return _sDate
         End Get
         Set(ByVal value As String)

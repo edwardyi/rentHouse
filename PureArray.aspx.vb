@@ -1,4 +1,5 @@
-﻿Public Partial Class PureArray
+﻿Imports System.Data
+Partial Public Class PureArray
     Inherits System.Web.UI.Page
     Dim recordTable As DataTable = New DataTable("record")
     Dim renterTable As DataTable = New DataTable("renter")
@@ -40,7 +41,7 @@
 
         'PrintValues(renterTable, "Merge")
         'PrintValues(renterTable, "test")
-        
+
         'For Each row As DataRow In BuildRecord.Rows
         'Response.Write(row(2).ToString)
 
