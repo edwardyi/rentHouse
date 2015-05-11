@@ -91,13 +91,8 @@ Public Class RentHouse3
         'Return (day.Year & "|" & eday.Year)
         Dim span As TimeSpan = eday.Subtract(day)
         '同年同月
-        'If (day.Year.Equals(eday.Year) And day.Month.Equals(eday.Month)) Then
-        'System.Diagnostics.Debug.WriteLine("isFullStart")
-        'System.Diagnostics.Debug.WriteLine(span.Days)
-        'System.Diagnostics.Debug.WriteLine("<br>")
-        'System.Diagnostics.Debug.WriteLine("daysInMonth=>" & daysInMonth)
-        'System.Diagnostics.Debug.WriteLine(span.Days < daysInMonth)
-        If span.Days < daysInMonth Then
+        'span.Days < daysInMonth 
+        If day.Year.Equals(eday.Year) And day.Month.Equals(eday.Month) Then
             'unit = (span.Days + 1) / daysInMonth
             unit = span.Days + 1
             'System.Diagnostics.Debug.WriteLine("span" & span.Days)
@@ -117,9 +112,9 @@ Public Class RentHouse3
             'unit = (daysInMonth - day.Day + 1) / daysInMonth
             unit = daysInMonth - day.Day + 1
             unit = unit / daysInMonth
-            currentFlag = currentFlag + 1
-            If (unit.Equals(1)) Then
 
+            If (unit.Equals(1)) Then
+                currentFlag = currentFlag + 1
                 Return threeMonthFee
 
             Else
@@ -130,6 +125,11 @@ Public Class RentHouse3
     End Function
     '判斷結束租屋是否滿月
     Public Function isfullEnd(ByVal day, ByVal daysInMonth, ByVal threeMonthFee, ByVal rate)
+        'System.Diagnostics.Debug.WriteLine("isfullEnd=>currentFlag")
+        'System.Diagnostics.Debug.WriteLine(currentFlag)
+        System.Diagnostics.Debug.WriteLine("isfullEnd")
+        System.Diagnostics.Debug.WriteLine(daysInMonth)
+        System.Diagnostics.Debug.WriteLine(day)
         '滿月如果又為九十天後一個月
         If (day.Equals(daysInMonth)) Then
             '先加上1後再取餘數
@@ -188,7 +188,10 @@ Public Class RentHouse3
                 '判斷是否為結束時間
             ElseIf i.Equals(CInt(arr.length) - 1) Then
                 dayCount = dayCount + eDate.Day
-                arr_month_fee(i) = isfullEnd(eDate.Day, Item, threeMonthFee, rate)
+                System.Diagnostics.Debug.WriteLine("pushArr")
+                Dim daysinMonth = DateTime.DaysInMonth(eDate.Year, eDate.Month)
+                arr_month_fee(i) = isfullEnd(eDate.Day, daysinMonth, threeMonthFee, rate)
+                'arr_month_fee(i) = isfullEnd(eDate.Day, Item, threeMonthFee, rate)
 
                 '其他月份
             Else
@@ -197,6 +200,8 @@ Public Class RentHouse3
 
 
             End If
+            '0511重新設定為0(因為有其他方法也會呼叫判斷是否為滿月的涵式
+            currentFlag = 0
             '遞增
             i = i + 1
         Next
@@ -241,15 +246,6 @@ Public Class RentHouse3
         'System.Diagnostics.Debug.WriteLine("This is real crazy")
         For Each Item As Integer In arr_month_fee
             Dim dr As DataRow = dt.NewRow()
-            System.Diagnostics.Debug.WriteLine("當前月份?")
-            System.Diagnostics.Debug.WriteLine(eDate.Month.Equals(currentMonth))
-            'System.Diagnostics.Debug.WriteLine("J = 0 ?")
-            'System.Diagnostics.Debug.WriteLine(j.Equals(0))
-            'System.Diagnostics.Debug.WriteLine("ShowDetail=>" & Item)
-            'System.Diagnostics.Debug.WriteLine("J=>" & j)
-            'System.Diagnostics.Debug.WriteLine("currentYear=>" & currentYear)
-            'System.Diagnostics.Debug.WriteLine("currentMonth=>" & currentMonth)
-            'System.Diagnostics.Debug.WriteLine("daysInMonth Funk=>" & DateTime.DaysInMonth(currentYear, currentMonth))
             Dim outStr As String = ""
             If currentMonth > 12 Then
                 currentMonth = 1
@@ -263,46 +259,37 @@ Public Class RentHouse3
             'System.Diagnostics.Debug.WriteLine("中文字喔XD")
             If j.Equals(0) Then
                 dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & sDate.Day
-                'System.Diagnostics.Debug.WriteLine("比較月份")
-                'System.Diagnostics.Debug.WriteLine(eDate.Month)
-                'System.Diagnostics.Debug.WriteLine(currentMonth)
-                'System.Diagnostics.Debug.WriteLine(eDate.Month.Equals(currentMonth))
-                If eDate.Month.Equals(currentMonth) Then
-                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
-                Else
-                    'Dim span As TimeSpan = sDate.Subtract(eDate)
-                    'System.Diagnostics.Debug.WriteLine("比較月份")
-                    'System.Diagnostics.Debug.WriteLine(span.Days < daysInmonth)
 
-                    'System.Diagnostics.Debug.WriteLine("daysInmonth=>" & daysInmonth)
-                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
-                End If
-                Dim span As TimeSpan = eDate.Subtract(sDate)
                 '0511發現isfullStart帶錯值(不是代Item)
                 money = isfullStart(sDate, eDate, daysInmonth, threeMonthFee, rate)
                 dr.Item("money") = money
-                dr.Item("average") = Convert.ToInt32(money / (daysInmonth - sDate.Day + 1))
-                'dr.Item("liveDays") = 1
-                System.Diagnostics.Debug.WriteLine("前daysInMonth=>" & daysInmonth)
-                'IIf(span.Days < daysInmonth, daysInmonth = eDate.Day, "")
-                System.Diagnostics.Debug.WriteLine(span.Days < daysInmonth)
-                System.Diagnostics.Debug.WriteLine("後daysInMonth=>" & daysInmonth)
-                'dr.Item("liveDays") = span.Days
-                dr.Item("liveDays") = daysInmonth - sDate.Day + 1
+                '0511判斷是否為同一月份
+                If eDate.Month.Equals(currentMonth) Then
+                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
+                    dr.Item("average") = Convert.ToInt32(money / (eDate.Day - sDate.Day + 1))
+                    dr.Item("liveDays") = eDate.Day - sDate.Day + 1
+                Else
+                    dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
+                    dr.Item("average") = Convert.ToInt32(money / (daysInmonth - sDate.Day + 1))
+                    dr.Item("liveDays") = daysInmonth - sDate.Day + 1
+                End If
+                Dim span As TimeSpan = eDate.Subtract(sDate)
+                
             ElseIf j.Equals(arr_month_fee.Length - 1) Then
-                dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
-                money = isfullEnd(eDate.Day, Item, threeMonthFee, rate)
-                dr.Item("money") = money
-                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
-                dr.Item("average") = Convert.ToInt32(money / eDate.Day)
-                dr.Item("liveDays") = eDate.Day
+            dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
+                'System.Diagnostics.Debug.WriteLine("showDetail")
+                money = isfullEnd(eDate.Day, daysInmonth, threeMonthFee, rate)
+            dr.Item("money") = money
+            dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & eDate.Day
+            dr.Item("average") = Convert.ToInt32(money / eDate.Day)
+            dr.Item("liveDays") = eDate.Day
             Else
-                dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
-                dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
-                money = isfullother(Item, threeMonthFee, rate)
-                dr.Item("money") = money
-                dr.Item("average") = Convert.ToInt32(money / daysInmonth)
-                dr.Item("liveDays") = daysInmonth
+            dr.Item("s_date") = currentYear & "-" & currentMonth & "-" & 1
+            dr.Item("e_date") = currentYear & "-" & currentMonth & "-" & daysInmonth
+            money = isfullother(Item, threeMonthFee, rate)
+            dr.Item("money") = money
+            dr.Item("average") = Convert.ToInt32(money / daysInmonth)
+            dr.Item("liveDays") = daysInmonth
             End If
 
             'dr.Item("money") = Item

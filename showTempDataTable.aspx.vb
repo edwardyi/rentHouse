@@ -30,6 +30,7 @@ Partial Class showTempDataTable
         list.add(startDate)
         list.add(endDate)
         Dim tempDataTable As DataTable = GetDetailData(list)
+       
         'Dim dt As DataTable = New DataTable
         'dt.Columns.Add("workId", Type.GetType("System.Int32"))
         'dt.Columns.Add("s_date", Type.GetType("System.DateTime"))

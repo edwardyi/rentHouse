@@ -123,8 +123,8 @@ Partial Public Class _Default
         Dim s_date As DateTime = list(2).ToString
         Dim e_date As DateTime = list(3).ToString
 
-        Dim money As Integer = list(4).ToString
-        Dim average As Integer = 3
+        'Dim money As Integer = list(4).ToString
+        'Dim average As Integer = 3
 
 
         Dim Rent3 As New RentHouse3(s_date, e_date)
