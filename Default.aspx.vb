@@ -109,7 +109,9 @@ Partial Public Class _Default
             result.Text = "新增失敗!" & WorkID.ToString() & "資料已存在!"
         End If
     End Sub
+    '這個方法看起來像沒有用
     Private Shared Function GetDetailData(ByVal list) As DataTable
+        System.Diagnostics.Debug.WriteLine("shared function getDetailData")
         Dim dt As DataTable = New DataTable
         dt.Columns.Add("s_date", Type.GetType("System.DateTime"))
         dt.Columns.Add("e_date", Type.GetType("System.DateTime"))
@@ -120,6 +122,7 @@ Partial Public Class _Default
         '字串轉成日期格式
         Dim s_date As DateTime = list(2).ToString
         Dim e_date As DateTime = list(3).ToString
+
         Dim money As Integer = list(4).ToString
         Dim average As Integer = 3
 
@@ -163,6 +166,7 @@ Partial Public Class _Default
             'For Each row As Object In GetDetailData(UserId).Rows
             ' Response.Write(row(0))
             'Next
+            System.Diagnostics.Debug.WriteLine("showUsersGrid_RowDataBound=>")
             Dim list As New List(Of String)
             'list.Add(e.Row.Cells(0).Text)
             list.Add(e.Row.Cells(1).Text)
