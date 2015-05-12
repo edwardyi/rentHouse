@@ -22,4 +22,8 @@ Partial Class Default2
 
         Response.Write(test.SelectedValue)
     End Sub
+    '自user control中定義的事件
+    Protected Sub newRenter_ClickA(ByVal sender As Object, ByVal e As System.EventArgs) Handles RentForm21.newRenterClickA
+        Response.Write("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
+    End Sub
 End Class
