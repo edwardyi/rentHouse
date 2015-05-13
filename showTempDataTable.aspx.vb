@@ -5,21 +5,7 @@ Partial Class showTempDataTable
     Dim tempDataSet As New DataSet()
 
     Protected Sub btn_Show_DataTable_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btn_Show_DataTable.Click
-        'Dim date1 As Date = "2014-01-02"
-        'Dim date2 As Date = "2014-01-12"
-        'Dim span As TimeSpan = date2.Subtract(date1)
-        'Response.Write(date1 & "=>" & date2 & (date1.Year.Equals(date2.Year).ToString))
-        'Response.Write(date1 & "=>" & date2 & (date1.Month.Equals(date2.Month).ToString))
-        'Response.Write(date1 & "=>" & date2 & span.Days)
-        'Dim i1 As Integer = 100
-        'Dim d1 As Double = 0.12343
-        'Dim time1 As Integer = i1 * d1
-        'Response.Write("整數*double值" & time1)
-        'Response.Write("<br/>")
-
-
-        Response.Write("<br/>")
-        'Response.Write(date1 & "=>" & date2 & (DateTime.compare(date1.Year, date2.Year)))
+       
         Dim workId = Request("workId")
         Dim startDate = Request("startDate")
         Dim endDate = Request("endDate")
@@ -31,28 +17,6 @@ Partial Class showTempDataTable
         list.add(endDate)
         Dim tempDataTable As DataTable = GetDetailData(list)
        
-        'Dim dt As DataTable = New DataTable
-        'dt.Columns.Add("workId", Type.GetType("System.Int32"))
-        'dt.Columns.Add("s_date", Type.GetType("System.DateTime"))
-        'dt.Columns.Add("e_date", Type.GetType("System.DateTime"))
-        'dt.Columns.Add("money", Type.GetType("System.Int32"))
-        'dt.Columns.Add("average", Type.GetType("System.Int32"))
-        'dt.Columns.Add("liveDays", Type.GetType("System.Int32"))
-        'dt.Rows.Add(123, "2015-05-11", "2015-05-12", 333, 22, 12)
-        'tempDataTable = dt
-        'Dim rent4 As New RentHouse4(startDate, endDate)
-        'Dim tempDataTable As DataTable = rent4.getTempDataTable(workId, startDate, endDate)
-        '設定表頭(跨欄)
-        'Dim header_row As New GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal)
-        'Dim header As New TableHeaderCell()
-        '設值
-        'header.Text = "工號:" & workId
-        'header.ColumnSpan = 5
-        '加入欄位
-        'header_row.Controls.Add(header)
-        '表首
-        'show_temp_gridview.HeaderRow.Parent.Controls.Add(header_row)
-        'Response.Write(35000 * (2 / 31))
         show_temp_gridview.DataSource = tempDataTable
         show_temp_gridview.DataBind()
         '設定表單尾巴(跨欄)
