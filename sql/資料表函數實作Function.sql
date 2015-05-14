@@ -18,26 +18,24 @@ CREATE TABLE #ReturnTable(
 )
 --計數器
 Set @i = 1
+-- 在分割字串的最後面加上分號，讓剩下的字串能顯示出來
+Set @targetStr = @targetStr + @splitChar
 
---要加Begin和END:作為while迴圈的區塊
+--要加Begin和END:作為while迴圈的區塊(if條件判斷也是)
 while(LEN(@targetStr)>1)
 Begin
 	 --輸出
 	 Declare @output varchar(5)
 	 set @output = SUBSTRING(@targetStr,1,CHARINDEX(@splitChar,@targetStr)-1)
 	 --SELECT SUBSTRING(@targetStr,1, CHARINDEX(@splitChar,@targetStr)-1)
-	 --設定下一個字串
+	 --設定下一個字串(取右方剩下的字串=全部扣除輸出的字串得到剩下長度)
 	 SET @targetStr = RIGHT(@targetStr,LEN(@targetStr)-CharIndex(@splitChar,@targetStr))
+	 
 	 --SELECT LEN(@targetStr)
 	 
 	INSERT INTO #ReturnTable(Id,SplitStr) values(@i,@output)
 	set @i = @i +1
-	select LEN(@targetStr)
-	--if LEN(@targetStr) <1
-	--	set @output = @targetStr
-	--BEGIN
-	--	INSERT INTO #ReturnTable(Id,SplitStr) values(@i,@output)
-	--END
+	
 END
 
  
@@ -49,6 +47,10 @@ select * from #ReturnTable
 --判斷是否暫存資料表存在，若存在就刪除暫存的資料表
 If OBJECT_ID('tempdb.dbo.#ReturnTable','U') is Not null
 	drop table #ReturnTable
+
+
+
+
 
 
 
