@@ -1,0 +1,184 @@
+DECLARE @fee INT,
+		@rate decimal(5,2)
+SET @fee = 35000
+SET @rate = 3.0/5
+
+DECLARE @startDate DATETIME,
+        @endDate DATETIME,
+		@workId VARCHAR(10)
+-- 開始日期
+SET @startDate = '2014-02-09'
+-- 結束日期
+SET @endDate = '2015-12-28'
+-- 工號
+SET @workID = 'TW0180001'
+
+--判斷是否暫存資料表存在，若存在就刪除暫存的資料表
+If OBJECT_ID('tempdb.dbo.#TempTable','U') is Not null
+	drop table #TempTable
+	
+CREATE TABLE #TempTable(
+	--id INT,
+	WorkId VARCHAR(10),
+	CurrentMonth VARCHAR(10),
+	StartMonth DATETIME,
+	EndMonth DATETIME,
+	LiveDays INT,
+	IsFullMonth INT,
+	PerRent FLOAT,
+	RentMoney INT
+)
+-- 設定是否優惠flag變數
+DECLARE @flag INT
+SET @flag = 0
+DECLARE @tempCurrentMonth VARCHAR(10),
+		@tempStartMonth DATETIME,
+		@tempEndMonth DATETIME,
+		@tempLiveDays INT,
+		@tempUnit FLOAT,
+		@tempMoney INT,
+		@tempFee INT
+DECLARE @tempLastDay DATETIME
+SET @tempLastDay = DATEADD(mm, DATEDIFF(m,0,@startDate)+1,0)-1
+--SELECT DATEDIFF(day,@tempLastDay,@endDate)
+
+-- 開始日期判斷開始 BEGIN
+-- 判斷是否為開始日期
+-- 當開始日期為當月的第一天且結束日期大於當月的最後一天(第一天是否滿月判斷)
+SET @tempCurrentMonth = LEFT(CONVERT(VARCHAR,@startDate,120),7)
+SET @tempStartMonth = @startDate
+SET @tempEndMonth = @endDate
+SET @tempUnit = @fee * 1.0 / DAY(@tempLastDay)
+SET @tempUnit = convert(decimal(8,2),@tempUnit)  
+SET @tempLiveDays = DATEDIFF(day,@startDate,@tempLastDay) +1 
+SET @tempMoney = @tempUnit * @tempLiveDays
+IF DAY(@startDate) = 1 AND DATEDIFF(day,@tempLastDay,@endDate)>=0
+BEGIN
+	SET @flag = 1
+END
+ELSE
+BEGIN
+    SET @flag = 0
+END
+INSERT INTO #TempTable(
+				WorkId,
+				CurrentMonth,
+				StartMonth,
+				EndMonth,
+				LiveDays,
+				IsFullMonth,
+				PerRent,
+				RentMoney
+			)
+	SELECT @workId,
+		   @tempCurrentMonth,
+		   @tempStartMonth,
+		   @tempEndMonth,
+		   @tempLiveDays,
+		   @flag,
+		   @tempUnit,
+		   @tempMoney
+-- 開始日期判斷結束 END
+----------------我是分隔線----------------------
+--判斷開始與結束期間
+DECLARE @tempInterval INT,
+		@currentMonth INT,
+		@dt1 DATETIME,
+		@dt2 DATETIME
+SET @tempInterval = DATEDIFF(MONTH,@startDate,@endDate) -1 
+SET @currentMonth = 1
+WHILE @tempInterval>=@currentMonth
+BEGIN
+	SET @flag = @flag + 1
+	IF @flag % 4 = 0
+	BEGIN	
+		SET @flag = 0 
+	END
+	SET @dt1 = DATEADD(mm, DATEDIFF(m,0,@startDate)+@currentMonth,0)
+	SET @dt2 = DATEADD(mm, DATEDIFF(m,0,@dt1)+1,0)-1
+	
+	SET @tempCurrentMonth = LEFT(CONVERT(VARCHAR,@dt1,120),7)
+	SET @tempLiveDays = DAY(@dt2)
+	SET @tempUnit = @fee * 1.0 / DAY(@dt2)
+	SET @tempUnit = convert(decimal(8,2),@tempUnit)  
+	--SET @tempLiveDays = DATEDIFF(day,@dt1,@dt2) +1 
+	--SELECT @rate
+	IF @flag = 0 
+	BEGIN
+		SET @tempMoney =  @fee  * @rate
+	END
+	ELSE
+	BEGIN
+		SET @tempMoney =  @fee  
+	END
+	
+	INSERT INTO #TempTable(
+				WorkId,
+				CurrentMonth,
+				StartMonth,
+				EndMonth,
+				LiveDays,
+				IsFullMonth,
+				PerRent,
+				RentMoney
+			)
+	SELECT @workId,
+		   @tempCurrentMonth,
+		   @dt1,
+		   @dt2,
+		   @tempLiveDays,
+		   @flag,
+		   @tempUnit,
+		   @tempMoney
+	--SELECT @dt1,@dt2,@flag
+	SET @currentMonth = @currentMonth + 1
+END
+-- 開始到結束日期判斷結束 END
+----------------我是分隔線----------------------
+-- 判斷結束日期開始
+-- 最後的結束日期是否為當月的最後一天
+SET @tempStartMonth = DATEADD(m, DATEDIFF(m,1,@endDate),0)
+SET @tempEndMonth = @endDate
+SET @tempCurrentMonth = LEFT(CONVERT(VARCHAR,@tempStartMonth,120),7)
+SET @tempLiveDays = DATEDIFF(day,@tempStartMonth,@tempEndMonth) + 1
+--如果等於3代表最後一個月有優惠
+IF @flag = 3
+BEGIN
+	SET @tempFee = @fee * @rate
+END
+ELSE
+BEGIN
+	SET @tempFee = @fee
+END
+
+SET @tempUnit = @tempFee * 1.0 / DAY(DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,@endDate)+1,0))) 
+SET @tempUnit = convert(decimal(8,2),@tempUnit)  
+SET @tempMoney = @tempUnit * @tempLiveDays
+--SELECT @tempUnit,@tempLiveDays
+INSERT INTO #TempTable(
+				WorkId,
+				CurrentMonth,
+				StartMonth,
+				EndMonth,
+				LiveDays,
+				IsFullMonth,
+				PerRent,
+				RentMoney
+			)
+	SELECT @workId,
+		   @tempCurrentMonth,
+		   @tempStartMonth,
+		   @tempEndMonth,
+		   @tempLiveDays,
+		   @flag,
+		   @tempUnit,
+		   @tempMoney
+--SELECT @tempStartMonth,@tempEndMonth
+
+
+
+SELECT * FROM #TempTable
+
+--判斷是否暫存資料表存在，若存在就刪除暫存的資料表
+If OBJECT_ID('tempdb.dbo.#TempTable','U') is Not null
+	drop table #TempTable
