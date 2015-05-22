@@ -1,0 +1,100 @@
+--要加上連線的資料庫名稱(位置)
+USE [C:\USERS\TW018008\DOCUMENTS\GITHUB\RENTHOUSE\APP_DATA\RENTHOUSE1.MDF]
+GO
+--建立佔存資料表到dbo.RentRecord
+If OBJECT_ID('tempdb.dbo.#TempTable','U') is Not null
+	drop table #TempTable
+
+CREATE TABLE #TempTable(
+	id INT,
+	currentMonth VARCHAR(7),
+	startMonth DATETIME,
+	endMonth DATETIME,
+	isFullMonth INT,
+	liveDay INT,
+	unitPrice FLOAT,
+	fee INT
+)
+
+DECLARE @tempStart DATETIME,@tempEnd DATETIME,@currentMonth DATETIME
+DECLARE @start DATETIME, @end DATETIME,@tempLastDay DATETIME
+SET @start = '2014/02/9'
+SET @end = '2015-12-28'
+INSERT INTO #TempTable
+SELECT * FROM dbo.fnTempTable(@start,@end)
+
+
+--更新第一筆資料
+UPDATE TOP(1) #TempTable SET startMonth = @start 
+--更新最後一筆資料
+;WITH LastRow AS(
+	SELECT TOP(1) * 
+	FROM #TempTable
+	ORDER BY currentMonth DESC
+)
+UPDATE LastRow SET endMonth = @end
+
+--滿月判斷:SQL更新
+IF DAY(@start) != 1 OR DATEDIFF(day,@tempLastDay,@end)<0
+BEGIN
+	UPDATE #TempTable SET isFullMonth = isFullMonth -1
+	WHERE startMonth != @start
+	--SELECT * FROM #TempTable
+END
+
+
+ 
+--滿月判斷更新結束
+DECLARE @fee INT
+SET @fee = 35000
+DECLARE @rate FLOAT
+SET @rate = 3.0/5
+
+--更新費用資料
+UPDATE #TempTable 
+SET fee = @fee
+--如果取餘數為0代表有優惠
+UPDATE #TempTable 
+SET fee = @fee * @rate
+WHERE isFullMonth % 4 = 0
+--SELECT * FROM #TempTable
+
+-- 更新住屋天數
+UPDATE #TempTable
+SET liveDay = DATEDIFF(DAY,startMonth,endMonth)+1
+
+-- 更新單價
+UPDATE #TempTable
+SET unitPrice = CONVERT(decimal(8,2),fee*1.0/DATEPART(day,DATEADD(m, DATEDIFF(m,0,startMonth)+1,0)-1))
+
+
+
+--更新第一筆費用資料
+UPDATE TOP(1) #TempTable 
+SET fee = liveDay * unitPrice
+
+--更新最後一筆費用資料
+;WITH LastRow AS(
+	SELECT TOP(1) * 
+	FROM #TempTable
+	ORDER BY currentMonth DESC
+)
+UPDATE LastRow SET fee = liveDay * unitPrice
+
+--修改isFullMonth欄位(判斷是否為滿月)
+;WITH isFullMonth AS(
+	SELECT *,
+		   DATEDIFF(DAY,currentMonth+'/01',DATEADD(MONTH,1,currentMonth+'/01')-1)+1 AS fullMonth,
+		   DATEDIFF(DAY,startMonth,endMonth)+1 AS diffMonth
+	FROM #TempTable
+)
+UPDATE isFullMonth SET isFullMonth = 0 WHERE fullMonth != diffMonth 
+UPDATE #TempTable SET isFullMonth = 1 WHERE isFullMonth >1
+
+
+
+SELECT * FROM #TempTable
+
+If OBJECT_ID('tempdb.dbo.#TempTable','U') is Not null
+	drop table #TempTable
+   
