@@ -1,0 +1,78 @@
+IF OBJECT_ID('tempdb.dbo.#TempPCTable','U') IS NOT NULL
+	DROP TABLE #TempPCTable
+CREATE TABLE #TempPCTable(
+	PartNo INT,
+	PartName VARCHAR(20),
+	Parent VARCHAR(20)
+)
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'PC','ROOT' FROM #TempPCTable
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'主板模組','PC' FROM #TempPCTable	
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'CPU','主板模組' FROM #TempPCTable
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'RAM','主板模組' FROM #TempPCTable	
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'CPU散熱器','主板模組' FROM #TempPCTable
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'滾珠風扇','CPU散熱器' FROM #TempPCTable	
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'散熱鰭片','CPU散熱器' FROM #TempPCTable
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'Storage Cage','PC' FROM #TempPCTable
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'DVD燒錄機','Storage Cage' FROM #TempPCTable
+		
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'HD','Storage Cage' FROM #TempPCTable
+		
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'FDD','Storage Cage' FROM #TempPCTable
+		
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'機殼模組','PC' FROM #TempPCTable
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'電源供應器','機殼模組' FROM #TempPCTable
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'機殼框架','機殼模組' FROM #TempPCTable
+	
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'面板','機殼模組' FROM #TempPCTable
+
+INSERT INTO #TempPCTable
+	SELECT COUNT(*)+1 partNo,'側板','機殼模組' FROM #TempPCTable
+
+
+--如果CTE的WITH不在第一列, 前方要加上;
+;WITH DIYParts_BOM(PartName, Parent, Level, SortCol) 
+AS
+(
+    --Recursive CTE分為兩個部分, 第一部分為Anchor Member
+    --指不會被遞迴呼叫到的部分
+    SELECT PartName, Parent, 0, CONVERT(nvarchar(128),PartNo)
+    FROM #TempPCTable WHERE Parent=N'ROOT'
+ 
+    UNION ALL
+ 
+    --UNION ALL後方的部分稱為Recursive Member, 會在遞迴過程中反覆執行, 
+    --直到無任何查詢結果為止
+    SELECT P.PartName, P.Parent, B.Level+1, 
+    CONVERT(nvarchar(128), B.SortCol+'-'+CONVERT(nvarchar(128),P.PartNo))
+    FROM #TempPCTable P, DIYParts_BOM B
+    WHERE P.Parent=B.PartName
+)
+SELECT REPLICATE('       ',Level) + PartName, Level, SortCol
+FROM DIYParts_BOM ORDER BY SortCol 
+SELECT * FROM #TempPCTable
