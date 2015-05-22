@@ -1,0 +1,271 @@
+USE [C:\USERS\TW018008\DOCUMENTS\GITHUB\RENTHOUSE\APP_DATA\RENTHOUSE1.MDF]
+GO
+/****** Object:  StoredProcedure [dbo].[GetEmployeeDetails]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetEmployeeDetails]
+      @EmployeeID int = 0
+AS
+BEGIN
+      SET NOCOUNT ON;
+      SELECT FirstName, LastName, BirthDate, City, Country
+      FROM Employees WHERE EmployeeID=@EmployeeID
+END
+GO
+/****** Object:  UserDefinedFunction [dbo].[fnTempTable]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:	    Edward yi
+-- Create date: 2015/05/22
+-- Description:	建立暫存資料表
+-- =============================================
+CREATE FUNCTION [dbo].[fnTempTable]
+( 
+    @start DATETIME,
+	@end DATETIME
+)
+RETURNS @tpTempTable TABLE 
+(
+   id INT,
+	currentMonth VARCHAR(7),
+	startMonth DATETIME,
+	endMonth DATETIME,
+	isFullMonth INT,
+	liveDay INT,
+	unitPrice FLOAT,
+	fee INT
+) 
+
+AS
+BEGIN
+
+--暫存資料表建立
+--CTE(一般資料表運算式):暫存資料
+--第一個CTE宣告(取得開始到結束期間的間距)
+
+;WITH tempQuery AS 
+(
+  SELECT TOP (DATEDIFF(MONTH, @start, @end) + 1) 
+    row_field = ROW_NUMBER() OVER (ORDER BY [object_id])
+  FROM sys.all_objects
+),
+--第二個CTE宣告(生成currentMonth欄位)
+tempCurrent AS (
+	SELECT DATEADD(MONTH, row_field-1, @start) AS currentMonth,row_field
+	FROM tempQuery
+),
+--第三個組出開始日期
+startDate AS(
+	SELECT 
+	       row_field AS id,
+		   REPLACE(LEFT(CONVERT(VARCHAR,currentMonth,120),7),'-','/') AS currentMonth,
+		   LEFT(CONVERT(VARCHAR,currentMonth,120),8)+'01' AS startDate ,
+		   LEFT(CONVERT(VARCHAR,DATEADD(m, DATEDIFF(m,0,currentMonth)+1,0)-1,120),10) AS endDate ,
+		   row_field AS isFullMonth
+		   --(row_field-1+@flag) % 4  AS isFullMonth
+    FROM tempCurrent
+)
+--查出來加入到暫存的資料表
+INSERT INTO @tpTempTable(id,currentMonth,startMonth,endMonth,isFullMonth)
+--要加上查詢語法
+SELECT  id,currentMonth,startDate,endDate,isFullMonth FROM startDate
+  
+    
+	
+	RETURN 
+END
+GO
+/****** Object:  UserDefinedFunction [dbo].[fnGGYY]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Guo Hua
+-- Create date: 2014/02/13
+-- Description:	產生起迄年月TABLE
+-- =============================================
+CREATE function [dbo].[fnGGYY]
+(
+   @beginYYYYMM VARCHAR(6),
+   @endYYYYMM VARCHAR(6)
+)
+RETURNS @refTable TABLE (
+yyyymm VARCHAR(6)
+) 
+
+AS
+BEGIN
+	DECLARE @tempDate DATETIME
+	DECLARE @beginDate DATETIME
+	DECLARE @endDate DATETIME
+	SET @beginDate = CONVERT(DATETIME, SUBSTRING(@beginYYYYMM, 1, 4)+SUBSTRING(@beginYYYYMM, 5, 2)+'01')
+	SET @endDate = CONVERT(DATETIME, SUBSTRING(@endYYYYMM, 1, 4)+SUBSTRING(@endYYYYMM, 5, 2)+'01')
+	SET @tempDate = @beginDate
+	WHILE (@tempDate <= @endDate)
+	BEGIN
+		INSERT INTO @refTable
+		SELECT CONVERT(VARCHAR(6), @tempDate, 112)
+		SET @tempDate = DATEADD(MONTH, 1, @tempDate)
+	END
+
+	RETURN 
+END
+GO
+/****** Object:  UserDefinedFunction [dbo].[updateTempTable]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:	    Edward yi
+-- Create date: 2015/05/22
+-- Description:	建立暫存資料表
+-- =============================================
+CREATE FUNCTION [dbo].[updateTempTable]
+( 
+    @start DATETIME,
+	@end DATETIME
+)
+RETURNS @tpTempTable TABLE 
+(
+   id INT,
+	currentMonth VARCHAR(7),
+	startMonth DATETIME,
+	endMonth DATETIME,
+	isFullMonth INT,
+	liveDay INT,
+	unitPrice FLOAT,
+	fee INT
+) 
+
+AS
+BEGIN
+DECLARE @tempLastDay DATETIME
+SET @tempLastDay =DATEADD(mm, DATEDIFF(m,0,@start)+1,0)-1
+--更新第一筆資料
+UPDATE TOP(1) @tpTempTable SET startMonth = @start 
+--更新最後一筆資料
+;WITH LastRow AS(
+	SELECT TOP(1) * 
+	FROM @tpTempTable
+	ORDER BY currentMonth DESC
+)
+UPDATE LastRow SET endMonth = @end
+
+--滿月判斷:SQL更新
+IF DAY(@start) != 1 OR DATEDIFF(day,@tempLastDay,@end)<0
+BEGIN
+	UPDATE @tpTempTable SET isFullMonth = isFullMonth -1
+	WHERE startMonth != @start
+	--SELECT * FROM #TempTable
+END
+
+
+ 
+--滿月判斷更新結束
+DECLARE @fee INT
+SET @fee = 35000
+DECLARE @rate FLOAT
+SET @rate = 3.0/5
+
+--更新費用資料
+UPDATE @tpTempTable 
+SET fee = @fee
+--如果取餘數為0代表有優惠
+UPDATE @tpTempTable 
+SET fee = @fee * @rate
+WHERE isFullMonth % 4 = 0
+--SELECT * FROM #TempTable
+
+-- 更新住屋天數
+UPDATE @tpTempTable
+SET liveDay = DATEDIFF(DAY,startMonth,endMonth)+1
+
+-- 更新單價
+UPDATE @tpTempTable
+SET unitPrice = CONVERT(decimal(8,2),fee*1.0/DATEPART(day,DATEADD(m, DATEDIFF(m,0,startMonth)+1,0)-1))
+
+
+
+--更新第一筆費用資料
+UPDATE TOP(1) @tpTempTable 
+SET fee = liveDay * unitPrice
+
+--更新最後一筆費用資料
+;WITH LastRow AS(
+	SELECT TOP(1) * 
+	FROM @tpTempTable
+	ORDER BY currentMonth DESC
+)
+UPDATE LastRow SET fee = liveDay * unitPrice
+
+--修改isFullMonth欄位(判斷是否為滿月)
+;WITH isFullMonth AS(
+	SELECT *,
+		   DATEDIFF(DAY,currentMonth+'/01',DATEADD(MONTH,1,currentMonth+'/01')-1)+1 AS fullMonth,
+		   DATEDIFF(DAY,startMonth,endMonth)+1 AS diffMonth
+	FROM @tpTempTable
+)
+UPDATE isFullMonth SET isFullMonth = 0 WHERE fullMonth != diffMonth 
+UPDATE @tpTempTable SET isFullMonth = 1 WHERE isFullMonth >1
+  
+    
+	
+	RETURN 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[showRepeater]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[showRepeater]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+BEGIN
+	/* SET NOCOUNT ON */
+	SELECT ID, WorkID, StartDate, EndDate, RentPerPrice
+		FROM  RentRecord
+		
+		
+
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[createRepeater]    Script Date: 05/22/2015 14:35:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[createRepeater]
+	/*
+	DECLARE @year VARCHAR(4) = '2008'
+	DECLARE @month INT = 2
+	不用Declare
+	*/	
+	@year VARCHAR(4) = '2008'
+	--@month INT = 1 -- 月份
+	-- @dt1 DATETIME -- 第一天
+	
+	
+	
+AS
+BEGIN
+	/* SET NOCOUNT ON */
+	SELECT @year,ID, WorkID, StartDate, EndDate, RentPerPrice
+		FROM RentRecord
+	RETURN
+	
+END
+GO
