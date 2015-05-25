@@ -33,7 +33,7 @@ INSERT INTO #TempTimeTable
 AS
 (
 	SELECT DATEADD(MONTH,0,StartTime),
-		   DATEADD(MONTH,1,StartTime),
+		   DATEADD(MONTH,0,StartTime),
 		   0,
 		   0
     FROM #TempTimeTable
@@ -41,14 +41,15 @@ AS
 	UNION ALL
 	-- WHERE 條件式用結束日期大於開始日期來生成時間區段
 	SELECT DATEADD(MONTH,flag+1,A.StartTime),
-		   DATEADD(MONTH,flag+2,A.StartTime),
+		   DATEADD(MONTH,flag+1,A.StartTime),
 		   flag+1,
 		   DATEDIFF(month,A.StartTime,A.EndTime)-2 AS interval
 	FROM #TempTimeTable A, TimeRecursive B
 	WHERE A.EndTime >= B.StartTime and B.flag <= B.interval
 )
-SELECT LEFT(CONVERT(VARCHAR,StartTime,111),7) AS startTime,
-	   LEFT(CONVERT(VARCHAR,EndTime,111),7) AS endTime 
+SELECT LEFT(CONVERT(VARCHAR,StartTime,111),7)+'/01' AS startTime,
+	   CONVERT(VARCHAR,DATEADD(month,1,CONVERT(DATETIME,LEFT(CONVERT(VARCHAR,StartTime,111),7)+'/01'))-1,111)
+	   --LEFT(CONVERT(VARCHAR,EndTime,111),7)+'/31' AS endTime 
 FROM TimeRecursive
 	
 	RETURN
