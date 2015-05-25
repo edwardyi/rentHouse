@@ -24,7 +24,8 @@ INSERT INTO #TempPreTable
 AS
 (
 	--Name,Parent,Level,SortCol
-	SELECT Name,Parent,0,CONVERT(VARCHAR,Id) AS Id FROM #TempPreTable
+	SELECT Name,Parent,0,CONVERT(VARCHAR,Id) AS Id 
+	FROM #TempPreTable
 	WHERE Parent = 'ROOT'
 	
 	UNION ALL
@@ -32,13 +33,17 @@ AS
 	-- SELECT出來的欄位必須要是Anchor Member
 	-- 絕不能為Recursive Member
 	-- WHERE條件要用Anchor Member的欄位來關聯
-	SELECT temp.Name,temp.Parent,pl.Level+1,CONVERT(VARCHAR,temp.Id) 
+	SELECT temp.Name,temp.Parent,
+	pl.Level+1,
+	-- 要轉換型別後串接，才不會發生型態轉換錯誤的問題	
+	--CONVERT(VARCHAR,temp.Id)
+	CONVERT(VARCHAR,pl.SortCol + '-' + CONVERT(VARCHAR,temp.Id) )
 	FROM #TempPreTable temp,preloop pl
 	WHERE temp.Parent = pl.Name
 )
 SELECT REPLICATE('   ' , Level)+Name,Level,SortCol 
 FROM preloop
---ORDER BY SortCol
+ORDER BY SortCol
 SELECT * FROM #TempPreTable
 IF OBJECT_ID('tempdb.dbo.##TempPreTable','U') IS NOT NULL
 	DROP TABLE #TempPreTable
