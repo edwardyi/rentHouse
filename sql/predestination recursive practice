@@ -1,0 +1,44 @@
+IF OBJECT_ID('tempdb.dbo.#TempPCTable','U') IS NOT NULL
+	DROP TABLE #TempPreTable
+CREATE TABLE #TempPreTable(
+	Id INT,
+	Name VARCHAR(20),
+	Parent VARCHAR(20)
+)
+INSERT INTO #TempPreTable
+	SELECT COUNT(*)+1 Id,'Jane','ROOT' FROM #TempPreTable
+
+INSERT INTO #TempPreTable
+	SELECT COUNT(*)+1 Id,'Jone','Jane' FROM #TempPreTable
+	
+INSERT INTO #TempPreTable
+	SELECT COUNT(*)+1 Id,'Orphan Baby','Jane' FROM #TempPreTable
+
+INSERT INTO #TempPreTable
+	SELECT COUNT(*)+1 Id,'BarTender','Jone' FROM #TempPreTable
+	
+INSERT INTO #TempPreTable
+	SELECT COUNT(*)+1 Id,'Fizzler Bomber','BarTender' FROM #TempPreTable
+
+;WITH preloop(Name,Parent,Level,SortCol)
+AS
+(
+	--Name,Parent,Level,SortCol
+	SELECT Name,Parent,0,CONVERT(VARCHAR,Id) AS Id FROM #TempPreTable
+	WHERE Parent = 'ROOT'
+	
+	UNION ALL
+	
+	-- SELECT出來的欄位必須要是Anchor Member
+	-- 絕不能為Recursive Member
+	-- WHERE條件要用Anchor Member的欄位來關聯
+	SELECT temp.Name,temp.Parent,pl.Level+1,CONVERT(VARCHAR,temp.Id) 
+	FROM #TempPreTable temp,preloop pl
+	WHERE temp.Parent = pl.Name
+)
+SELECT REPLICATE('   ' , Level)+Name,Level,SortCol 
+FROM preloop
+--ORDER BY SortCol
+SELECT * FROM #TempPreTable
+IF OBJECT_ID('tempdb.dbo.##TempPreTable','U') IS NOT NULL
+	DROP TABLE #TempPreTable
